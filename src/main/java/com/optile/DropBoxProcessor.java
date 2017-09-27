@@ -43,10 +43,11 @@ public class DropBoxProcessor {
 	/** authenticate user by Oauth over DropBox App,
 	 * @param appKey
 	 * @param appSecret
+	 * * @param authCode (it is used only for unit test)
 	 * @return Access Token <String>
 	 * @throws Exception
 	 */
-	public String getAccessToken(String appKey, String appSecret) throws Exception{
+	public String getAccessToken(String appKey, String appSecret, String dBxAuthCode) throws Exception{
 		
 		DbxAppInfo appInfo = new DbxAppInfo(appKey, appSecret);
         DbxRequestConfig regConf = new DbxRequestConfig(this.clientIdentifier);
@@ -55,13 +56,16 @@ public class DropBoxProcessor {
         DbxWebAuth.Request authReqDbx = DbxWebAuth.newRequestBuilder().withNoRedirect().build();
         String authUrl = authDbx.authorize(authReqDbx);
         
-        System.out.println("Go to " + authUrl + " \n and then click \"Allow\" (you might have to log in first)");
+        if(dBxAuthCode == null)
+        	System.out.println("Go to " + authUrl + " \n and then click \"Allow\" (you might have to log in first)");
         
         DbxAuthFinish authFinish;
         try {
-        	System.out.print("Copy the authorization code and paste it here:");
-        	String dBxCode = new BufferedReader(new InputStreamReader(System.in)).readLine();
-        	authFinish = authDbx.finishFromCode(dBxCode);
+        	if(dBxAuthCode == null){
+	        	System.out.print("Copy the authorization code and paste it here:");
+	        	dBxAuthCode = new BufferedReader(new InputStreamReader(System.in)).readLine();
+        	} 
+        	authFinish = authDbx.finishFromCode(dBxAuthCode);
         	if(authFinish == null)
         		throw new Exception("Authentication is empty!");
 		} catch (Exception e) {

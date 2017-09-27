@@ -52,7 +52,7 @@ public class DropBoxClient {
 				if(command.equalsIgnoreCase("auth")){
 					
 					System.out.println("################ AUTH #################");
-					String accessToken = dbxProcessor.getAccessToken(commandLine.split(" ")[1].trim(), commandLine.split(" ")[2].trim());
+					String accessToken = dbxProcessor.getAccessToken(commandLine.split(" ")[1].trim(), commandLine.split(" ")[2].trim(), null);
 					System.out.println("----------------------------------------------------------------------------------------------");
 					System.out.println("Your access-token: " + accessToken);
 					System.out.println("----------------------------------------------------------------------------------------------");
